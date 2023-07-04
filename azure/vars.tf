@@ -26,6 +26,15 @@ variable "tfc_project_name" {
 
 variable "tfc_workspace_name" {
   type        = string
-  default     = "my-azure-workspace"
   description = "The name of the workspace that you'd like to create and connect to Azure"
+}
+
+variable "subscription_name" {
+  type        = string
+  description = "The name of the new Azure subscription that will be created"
+}
+
+variable "billing_scope_id" {
+  type        = string
+  description = "The billing scope id under which the created Subscription will be billed"
 }

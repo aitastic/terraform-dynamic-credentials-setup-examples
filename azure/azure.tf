@@ -18,7 +18,7 @@ data "azurerm_subscription" "current" {
 #
 # https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/application
 resource "azuread_application" "tfc_application" {
-  display_name = "tfc-application"
+  display_name = "terraform-sp-${var.subscription_name}"
 }
 
 # Creates a service principal associated with the previously created
@@ -29,12 +29,17 @@ resource "azuread_service_principal" "tfc_service_principal" {
   application_id = azuread_application.tfc_application.application_id
 }
 
+resource "azurerm_subscription" "main" {
+  subscription_name = var.subscription_name
+  billing_scope_id  = var.billing_scope_id
+}
+
 # Creates a role assignment which controls the permissions the service
 # principal has within the Azure subscription.
 #
 # https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment
 resource "azurerm_role_assignment" "tfc_role_assignment" {
-  scope                = data.azurerm_subscription.current.id
+  scope                = azurerm_subscription.main.id
   principal_id         = azuread_service_principal.tfc_service_principal.object_id
   role_definition_name = "Contributor"
 }
@@ -62,4 +67,3 @@ resource "azuread_application_federated_identity_credential" "tfc_federated_cred
   issuer                = "https://${var.tfc_hostname}"
   subject               = "organization:${var.tfc_organization_name}:project:${var.tfc_project_name}:workspace:${var.tfc_workspace_name}:run_phase:apply"
 }
-
