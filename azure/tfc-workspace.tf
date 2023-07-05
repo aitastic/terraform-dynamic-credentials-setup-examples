@@ -5,6 +5,11 @@ provider "tfe" {
   hostname = var.tfc_hostname
 }
 
+data "tfe_project" "project" {
+  name         = var.tfc_project_name
+  organization = var.tfc_organization_name
+}
+
 # Runs in this workspace will be automatically authenticated
 # to Azure with the permissions set in the Azure policy. TODO: che k if wording right
 #
@@ -12,6 +17,7 @@ provider "tfe" {
 resource "tfe_workspace" "my_workspace" {
   name         = local.tfc_workspace_name
   organization = var.tfc_organization_name
+  project_id   = data.tfe_project.project.id
 }
 
 # The following variables must be set to allow runs
