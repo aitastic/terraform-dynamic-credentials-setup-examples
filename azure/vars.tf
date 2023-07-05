@@ -49,8 +49,8 @@ variable "invoice_section_id" {
   description = "The invoice section id for the billing scope under which the created Subscription will be billed"
 }
 
-variable "tfc_vcs_repo_identifier" {
-  type        = string
+variable "tfc_vcs_repo_block" {
+  type        = object()
   default     = null
   description = "Identifier of the repo to be connected to the new workspace. org/repo-name format for github. Otherwise refer to terraform documentation of the tfe provider"
 }
