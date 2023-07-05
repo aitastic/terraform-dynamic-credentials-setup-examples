@@ -50,7 +50,7 @@ variable "invoice_section_id" {
 }
 
 variable "tfc_vcs_repo_block" {
-  type        = map()
+  type        = map(object)
   default     = null
   description = "Identifier of the repo to be connected to the new workspace. org/repo-name format for github. Otherwise refer to terraform documentation of the tfe provider"
 }
