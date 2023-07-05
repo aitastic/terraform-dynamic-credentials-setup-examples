@@ -15,9 +15,10 @@ resource "tfe_workspace" "my_workspace" {
   project_id   = var.tfc_project_id
 
   vcs_repo {
-    identifier = var.tfc_vcs_repo_identifier
+    identifier     = var.tfc_vcs_repo_identifier
+    oauth_token_id = var.tfc_vcs_oauth_token_id
   }
-  
+
   working_directory = var.tfc_workspace_working_directory
   trigger_prefixes  = var.tfc_workspace_trigger_prefixes
 }

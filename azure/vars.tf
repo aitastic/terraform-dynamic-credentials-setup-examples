@@ -54,6 +54,11 @@ variable "tfc_vcs_repo_identifier" {
   description = "Identifier of the repo to be connected to the new workspace. org/repo-name format for github. Otherwise refer to terraform documentation of the tfe provider"
 }
 
+variable "tfc_vcs_oauth_token_id" {
+  type        = string
+  description = "OAuth token ID from the VCS connection of the Terraform Cloud org to the VCS"
+}
+
 variable "tfc_workspace_working_directory" {
   type        = string
   default     = null
@@ -65,3 +70,5 @@ variable "tfc_workspace_trigger_prefixes" {
   default     = null
   description = "List of folder prefixes to trigger runs"
 }
+
+
