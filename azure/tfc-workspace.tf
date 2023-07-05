@@ -21,9 +21,6 @@ resource "tfe_workspace" "my_workspace" {
     }
   }
   
-  vcs_repo {
-    identifier = var.tfc_vcs_repo_identifier
-  }
   working_directory = var.tfc_workspace_working_directory
   trigger_prefixes  = var.tfc_workspace_trigger_prefixes
 }
