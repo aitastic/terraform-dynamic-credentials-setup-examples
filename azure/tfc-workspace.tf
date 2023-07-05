@@ -15,7 +15,7 @@ resource "tfe_workspace" "my_workspace" {
   project_id   = var.tfc_project_id
 
   dynamic "vcs_repo" {
-    for_each = var.tfc_vcs_repo_object
+    for_each = var.tfc_vcs_repo_block
     content {
       identifier = vcs_repo.value["identifier"]
     }
