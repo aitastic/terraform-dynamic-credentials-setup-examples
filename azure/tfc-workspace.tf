@@ -17,7 +17,7 @@ data "tfe_project" "project" {
 resource "tfe_workspace" "my_workspace" {
   name         = local.tfc_workspace_name
   organization = var.tfc_organization_name
-  project_id   = data.tfe_project.project.id
+  project_id   = var.tfc_project_id
 
   vcs_repo {
     identifier = var.tfc_vcs_repo_identifier
