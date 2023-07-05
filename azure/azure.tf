@@ -23,9 +23,15 @@ resource "azuread_service_principal" "tfc_service_principal" {
   application_id = azuread_application.tfc_application.application_id
 }
 
+data "azurerm_billing_mca_account_scope" "main" {
+  billing_account_name = var.billing_account_id
+  billing_profile_name = var.billing_profile_id
+  invoice_section_name = var.invoice_section_id
+}
+
 resource "azurerm_subscription" "main" {
   subscription_name = var.subscription_name
-  billing_scope_id  = var.billing_scope_id
+  billing_scope_id  = data.azurerm_billing_mca_account_scope.main.id
 }
 
 # Creates a role assignment which controls the permissions the service

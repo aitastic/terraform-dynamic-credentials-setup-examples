@@ -29,7 +29,17 @@ variable "subscription_name" {
   description = "The name of the new Azure subscription that will be created"
 }
 
-variable "billing_scope_id" {
+variable "billing_account_id" {
   type        = string
-  description = "The billing scope id under which the created Subscription will be billed"
+  description = "The billing account id for the billing scope under which the created Subscription will be billed"
+}
+
+variable "billing_profile_id" {
+  type        = string
+  description = "The billing profile id for the billing scope under which the created Subscription will be billed"
+}
+
+variable "invoice_section_id" {
+  type        = string
+  description = "The invoice section id for the billing scope under which the created Subscription will be billed"
 }
