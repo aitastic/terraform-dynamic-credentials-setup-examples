@@ -18,6 +18,12 @@ resource "tfe_workspace" "my_workspace" {
   name         = local.tfc_workspace_name
   organization = var.tfc_organization_name
   project_id   = data.tfe_project.project.id
+
+  vcs_repo {
+    identifier = var.tfc_vcs_repo_identifier
+  }
+  working_directory = var.tfc_workspace_working_directory
+  trigger_prefixes  = var.tfc_workspace_trigger_prefixes
 }
 
 # The following variables must be set to allow runs
