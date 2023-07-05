@@ -10,7 +10,7 @@ provider "tfe" {
 #
 # https://registry.terraform.io/providers/hashicorp/tfe/latest/docs/resources/workspace
 resource "tfe_workspace" "my_workspace" {
-  name         = var.tfc_workspace_name
+  name         = local.tfc_workspace_name
   organization = var.tfc_organization_name
 }
 

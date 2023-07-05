@@ -18,7 +18,7 @@ data "azurerm_subscription" "current" {
 #
 # https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/application
 resource "azuread_application" "tfc_application" {
-  display_name = "terraform-sp-${var.subscription_name}"
+  display_name = local.azure_app_registration_name
 }
 
 # Creates a service principal associated with the previously created
@@ -53,7 +53,7 @@ resource "azuread_application_federated_identity_credential" "tfc_federated_cred
   display_name          = "my-tfc-federated-credential-plan"
   audiences             = [var.tfc_azure_audience]
   issuer                = "https://${var.tfc_hostname}"
-  subject               = "organization:${var.tfc_organization_name}:project:${var.tfc_project_name}:workspace:${var.tfc_workspace_name}:run_phase:plan"
+  subject               = "organization:${var.tfc_organization_name}:project:${var.tfc_project_name}:workspace:${local.tfc_workspace_name}:run_phase:plan"
 }
 
 # Creates a federated identity credential which ensures that the given
@@ -65,5 +65,5 @@ resource "azuread_application_federated_identity_credential" "tfc_federated_cred
   display_name          = "my-tfc-federated-credential-apply"
   audiences             = [var.tfc_azure_audience]
   issuer                = "https://${var.tfc_hostname}"
-  subject               = "organization:${var.tfc_organization_name}:project:${var.tfc_project_name}:workspace:${var.tfc_workspace_name}:run_phase:apply"
+  subject               = "organization:${var.tfc_organization_name}:project:${var.tfc_project_name}:workspace:${local.tfc_workspace_name}:run_phase:apply"
 }
