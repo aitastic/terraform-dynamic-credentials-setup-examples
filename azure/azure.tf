@@ -8,12 +8,6 @@ provider "azurerm" {
 provider "azuread" {
 }
 
-# Data source used to get the current subscription's ID.
-#
-# https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subscription
-data "azurerm_subscription" "current" {
-}
-
 # Creates an application registration within Azure Active Directory.
 #
 # https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/application
