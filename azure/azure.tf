@@ -47,7 +47,7 @@ resource "azurerm_role_assignment" "tfc_role_assignment" {
 resource "azurerm_role_assignment" "subscription_owner" {
   for_each = toset(var.subscription_owners)
   
-  scope                = module.test1_subscription.subscription_id
+  scope                = azurerm_subscription.main.subscription_id
   principal_id         = each.value
   role_definition_name = "Owner"
 }
