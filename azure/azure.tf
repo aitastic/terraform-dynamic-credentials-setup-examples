@@ -39,7 +39,7 @@ resource "azurerm_subscription" "main" {
 #
 # https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment
 resource "azurerm_role_assignment" "tfc_role_assignment" {
-  scope                = azurerm_subscription.main.id
+  scope                = azurerm_subscription.main.subscription_id
   principal_id         = azuread_service_principal.tfc_service_principal.object_id
   role_definition_name = "Contributor"
 }
