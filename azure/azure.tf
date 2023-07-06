@@ -44,10 +44,17 @@ resource "azurerm_role_assignment" "tfc_role_assignment" {
   role_definition_name = "Contributor"
 }
 
+# we have to fetch the subscription we just created in this same code...
+# because azurerm_subscription.main.id is the id of the ALIAS, very questionable implementation
+# but data.azurerm_subscription.main.id is the full subscription id which can be used in the scope parameter for role assignments
+data "azurerm_subscription" "main" {
+  subscription_id = azurerm_subscription.main.subscription_id
+}
+
 resource "azurerm_role_assignment" "subscription_owner" {
   for_each = toset(var.subscription_owners)
   
-  scope                = azurerm_subscription.main.subscription_id
+  scope                = data.azurerm_subscription.main.id
   principal_id         = each.value
   role_definition_name = "Owner"
 }
