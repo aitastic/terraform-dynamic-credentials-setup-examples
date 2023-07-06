@@ -44,6 +44,14 @@ resource "azurerm_role_assignment" "tfc_role_assignment" {
   role_definition_name = "Contributor"
 }
 
+resource "azurerm_role_assignment" "subscription_owner" {
+  for_each = toset(var.subscription_owners)
+  
+  scope                = module.test1_subscription.subscription_id
+  principal_id         = each.value
+  role_definition_name = "Owner"
+}
+
 # Creates a federated identity credential which ensures that the given
 # workspace will be able to authenticate to Azure for the "plan" run phase.
 #

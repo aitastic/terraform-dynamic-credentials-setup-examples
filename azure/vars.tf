@@ -71,4 +71,8 @@ variable "tfc_workspace_trigger_prefixes" {
   description = "List of folder prefixes to trigger runs"
 }
 
+variable "subscription_owners" {
+  type = list(string)
+  description = "List of object IDs for the users that get assigned Owner role for the subscription"
+}
 
