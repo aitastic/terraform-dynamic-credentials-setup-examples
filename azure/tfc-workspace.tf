@@ -47,6 +47,36 @@ resource "tfe_variable" "tfc_azure_client_id" {
   description = "The Azure Client ID runs will use to authenticate."
 }
 
+resource "tfe_variable" "arm_client_id" {
+  workspace_id = tfe_workspace.my_workspace.id
+
+  key      = "ARM_CLIENT_ID"
+  value    = azuread_application.tfc_application.application_id
+  category = "env"
+
+  description = "The Azure Client ID Terraform will use to authenticate."
+}
+
+resource "tfe_variable" "arm_tenant_id" {
+  workspace_id = tfe_workspace.my_workspace.id
+
+  key      = "ARM_TENANT_ID"
+  value    = azurerm_subscription.main.tenant_id
+  category = "env"
+
+  description = "The Azure Tenant ID Terraform will use to authenticate."
+}
+
+resource "tfe_variable" "arm_subscription_id" {
+  workspace_id = tfe_workspace.my_workspace.id
+
+  key      = "ARM_SUBSCRIPTION_ID"
+  value    = azurerm_subscription.main.subscription_id
+  category = "env"
+
+  description = "The Azure Subscription ID Terraform will use to authenticate."
+}
+
 # The following variables are optional; uncomment the ones you need!
 
 # resource "tfe_variable" "tfc_azure_audience" {
