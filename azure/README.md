@@ -1,6 +1,17 @@
+# General
+This azure module is made for creating an Azure subscription and the Terraform Workspace which will automatically be connected to the subscription via a service principal with OIDC authentication. This is intended to be used with Terraform Cloud.
+
+# Adjustments made compared to the forked base repo
+- Added subscription creation
+- Parameterized some values through variables
+- Added VCS connection for the Terraform Cloud Workspace
+
+
+
+# Previous documentation from the forked base repo below
 # Bootstrapping trust between a TFC workspace and Azure
 
-This directory contains example code for setting up a Terraform Cloud workspace whose runs will be automatically authenticated to Azure using Workload Identity.
+This directory contains code for setting up a Terraform Cloud workspace whose runs will be automatically authenticated to Azure using Workload Identity.
 
 The basic building blocks in `azure.tf` will configure a service principal in Azure and create federated identity credentials that are bound to a particular Terraform Cloud workspace.
 
