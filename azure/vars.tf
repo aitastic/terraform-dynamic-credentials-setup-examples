@@ -72,8 +72,8 @@ variable "tfc_workspace_trigger_prefixes" {
 }
 
 variable "subscription_owners" {
-  type = list(string)
-  default = []
+  type        = list(string)
+  default     = []
   description = "List of object IDs for the users that get assigned Owner role for the subscription"
 }
 

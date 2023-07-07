@@ -43,7 +43,7 @@ data "azurerm_subscription" "main" {
 
 resource "azurerm_role_assignment" "subscription_owner" {
   for_each = toset(var.subscription_owners)
-  
+
   scope                = data.azurerm_subscription.main.id
   principal_id         = each.value
   role_definition_name = "Owner"
