@@ -59,6 +59,12 @@ resource "azurerm_role_assignment" "tfc_role_assignment" {
   role_definition_name = "Contributor"
 }
 
+resource "azurerm_role_assignment" "tfc_role_assignment" {
+  scope                = data.azurerm_subscription.main.id
+  principal_id         = azuread_service_principal.tfc_service_principal.object_id
+  role_definition_name = "Role Based Access Control Administrator (Preview)"
+}
+
 # Creates a federated identity credential which ensures that the given
 # workspace will be able to authenticate to Azure for the "plan" run phase.
 #
