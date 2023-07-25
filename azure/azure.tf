@@ -53,10 +53,16 @@ resource "azurerm_role_assignment" "subscription_owner" {
 # principal has within the Azure subscription.
 #
 # https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment
-resource "azurerm_role_assignment" "tfc_role_assignment" {
+resource "azurerm_role_assignment" "tfc_role_assignment_contributor" {
   scope                = data.azurerm_subscription.main.id
   principal_id         = azuread_service_principal.tfc_service_principal.object_id
   role_definition_name = "Contributor"
+}
+
+resource "azurerm_role_assignment" "tfc_role_assignment_rbac" {
+  scope                = data.azurerm_subscription.main.id
+  principal_id         = azuread_service_principal.tfc_service_principal.object_id
+  role_definition_name = "Role Based Access Control Administrator (Preview)"
 }
 
 # Creates a federated identity credential which ensures that the given
