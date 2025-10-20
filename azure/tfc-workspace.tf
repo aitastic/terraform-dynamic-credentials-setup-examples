@@ -37,7 +37,7 @@ resource "tfe_variable" "tfc_azure_client_id" {
   workspace_id = tfe_workspace.my_workspace.id
 
   key      = "TFC_AZURE_RUN_CLIENT_ID"
-  value    = azuread_application.tfc_application.application_id
+  value    = azuread_application.tfc_application.client_id
   category = "env"
 
   description = "The Azure Client ID runs will use to authenticate."
@@ -47,7 +47,7 @@ resource "tfe_variable" "arm_client_id" {
   workspace_id = tfe_workspace.my_workspace.id
 
   key      = "ARM_CLIENT_ID"
-  value    = azuread_application.tfc_application.application_id
+  value    = azuread_application.tfc_application.client_id
   category = "env"
 
   description = "The Azure Client ID Terraform will use to authenticate."
