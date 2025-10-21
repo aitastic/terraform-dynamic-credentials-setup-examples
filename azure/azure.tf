@@ -1,12 +1,6 @@
 # Copyright (c) HashiCorp, Inc.
 # SPDX-License-Identifier: MPL-2.0
 
-provider "azurerm" {
-  features {}
-}
-
-provider "azuread" {
-}
 
 # Creates an application registration within Azure Active Directory.
 #
@@ -15,12 +9,28 @@ resource "azuread_application" "tfc_application" {
   display_name = local.azure_app_registration_name
 }
 
+# Allow the application to manage Applications created by it
+data "azuread_application_published_app_ids" "well_known" {}
+
+data "azuread_service_principal" "msgraph" {
+  client_id = data.azuread_application_published_app_ids.well_known.result["MicrosoftGraph"]
+}
+
+resource "azuread_application_api_access" "manage_own_apps" {
+  application_id = azuread_application.tfc_application.id
+  api_client_id  = data.azuread_application_published_app_ids.well_known.result["MicrosoftGraph"]
+
+  role_ids = [
+    data.azuread_service_principal.msgraph.app_role_ids["Application.ReadWrite.OwnedBy"],
+  ]
+}
+
 # Creates a service principal associated with the previously created
 # application registration.
 #
 # https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/service_principal
 resource "azuread_service_principal" "tfc_service_principal" {
-  application_id = azuread_application.tfc_application.application_id
+  client_id = azuread_application.tfc_application.client_id
 }
 
 data "azurerm_billing_mca_account_scope" "main" {
@@ -30,6 +40,7 @@ data "azurerm_billing_mca_account_scope" "main" {
 }
 
 resource "azurerm_subscription" "main" {
+  alias             = var.subscription_name
   subscription_name = var.subscription_name
   billing_scope_id  = data.azurerm_billing_mca_account_scope.main.id
 }
@@ -62,7 +73,7 @@ resource "azurerm_role_assignment" "tfc_role_assignment_contributor" {
 resource "azurerm_role_assignment" "tfc_role_assignment_rbac" {
   scope                = data.azurerm_subscription.main.id
   principal_id         = azuread_service_principal.tfc_service_principal.object_id
-  role_definition_name = "Role Based Access Control Administrator (Preview)"
+  role_definition_name = "Role Based Access Control Administrator"
 }
 
 # Creates a federated identity credential which ensures that the given
@@ -70,11 +81,11 @@ resource "azurerm_role_assignment" "tfc_role_assignment_rbac" {
 #
 # https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/application_federated_identity_credential
 resource "azuread_application_federated_identity_credential" "tfc_federated_credential_plan" {
-  application_object_id = azuread_application.tfc_application.object_id
-  display_name          = "my-tfc-federated-credential-plan"
-  audiences             = [var.tfc_azure_audience]
-  issuer                = "https://${var.tfc_hostname}"
-  subject               = "organization:${var.tfc_organization_name}:project:${var.tfc_project_name}:workspace:${local.tfc_workspace_name}:run_phase:plan"
+  application_id = azuread_application.tfc_application.id
+  display_name   = "my-tfc-federated-credential-plan"
+  audiences      = [var.tfc_azure_audience]
+  issuer         = "https://${var.tfc_hostname}"
+  subject        = "organization:${var.tfc_organization_name}:project:${var.tfc_project_name}:workspace:${local.tfc_workspace_name}:run_phase:plan"
 }
 
 # Creates a federated identity credential which ensures that the given
@@ -82,9 +93,9 @@ resource "azuread_application_federated_identity_credential" "tfc_federated_cred
 #
 # https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/application_federated_identity_credential
 resource "azuread_application_federated_identity_credential" "tfc_federated_credential_apply" {
-  application_object_id = azuread_application.tfc_application.object_id
-  display_name          = "my-tfc-federated-credential-apply"
-  audiences             = [var.tfc_azure_audience]
-  issuer                = "https://${var.tfc_hostname}"
-  subject               = "organization:${var.tfc_organization_name}:project:${var.tfc_project_name}:workspace:${local.tfc_workspace_name}:run_phase:apply"
+  application_id = azuread_application.tfc_application.id
+  display_name   = "my-tfc-federated-credential-apply"
+  audiences      = [var.tfc_azure_audience]
+  issuer         = "https://${var.tfc_hostname}"
+  subject        = "organization:${var.tfc_organization_name}:project:${var.tfc_project_name}:workspace:${local.tfc_workspace_name}:run_phase:apply"
 }
