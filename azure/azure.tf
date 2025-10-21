@@ -17,7 +17,7 @@ data "azuread_service_principal" "msgraph" {
 }
 
 resource "azuread_application_api_access" "manage_own_apps" {
-  application_id = azuread_service_principal.tfc_service_principal.client_id
+  application_id = azuread_application.tfc_application.id
   api_client_id  = data.azuread_application_published_app_ids.well_known.result["MicrosoftGraph"]
 
   role_ids = [
