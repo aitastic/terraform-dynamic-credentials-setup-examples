@@ -57,7 +57,7 @@ resource "azurerm_role_assignment" "tfc_role_assignment_contributor" {
 resource "azurerm_role_assignment" "tfc_role_assignment_rbac" {
   scope                = data.azurerm_subscription.main.id
   principal_id         = azuread_service_principal.tfc_service_principal.object_id
-  role_definition_name = "Role Based Access Control Administrator (Preview)"
+  role_definition_name = "Role Based Access Control Administrator"
 }
 
 # Creates a federated identity credential which ensures that the given
