@@ -2,28 +2,29 @@
 # SPDX-License-Identifier: MPL-2.0
 
 
-# Creates an application registration within Azure Active Directory.
-#
-# https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/application
-resource "azuread_application" "tfc_application" {
-  display_name = local.azure_app_registration_name
-}
-
-# Allow the application to manage Applications created by it
 data "azuread_application_published_app_ids" "well_known" {}
 
 data "azuread_service_principal" "msgraph" {
   client_id = data.azuread_application_published_app_ids.well_known.result["MicrosoftGraph"]
 }
 
-resource "azuread_application_api_access" "manage_own_apps" {
-  application_id = azuread_application.tfc_application.id
-  api_client_id  = data.azuread_application_published_app_ids.well_known.result["MicrosoftGraph"]
+# Creates an application registration within Azure Active Directory.
+#
+# https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/application
+resource "azuread_application" "tfc_application" {
+  display_name = local.azure_app_registration_name
 
-  role_ids = [
-    data.azuread_service_principal.msgraph.app_role_ids["Application.ReadWrite.OwnedBy"],
-  ]
+  required_resource_access {
+    resource_app_id = data.azuread_application_published_app_ids.well_known.result["MicrosoftGraph"]
+
+    resource_access {
+      # Allow the application to manage Applications created by it
+      id = data.azuread_service_principal.msgraph.app_role_ids["Application.ReadWrite.OwnedBy"]
+      type = "Role"
+    }
+  }
 }
+
 
 # Creates a service principal associated with the previously created
 # application registration.
