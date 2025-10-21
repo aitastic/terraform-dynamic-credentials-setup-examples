@@ -24,6 +24,7 @@ data "azurerm_billing_mca_account_scope" "main" {
 }
 
 resource "azurerm_subscription" "main" {
+  alias             = var.subscription_name
   subscription_name = var.subscription_name
   billing_scope_id  = data.azurerm_billing_mca_account_scope.main.id
 }
