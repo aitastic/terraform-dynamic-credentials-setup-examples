@@ -64,11 +64,11 @@ resource "azurerm_role_assignment" "tfc_role_assignment_rbac" {
 #
 # https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/application_federated_identity_credential
 resource "azuread_application_federated_identity_credential" "tfc_federated_credential_plan" {
-  application_id = azuread_application.tfc_application.object_id
-  display_name          = "my-tfc-federated-credential-plan"
-  audiences             = [var.tfc_azure_audience]
-  issuer                = "https://${var.tfc_hostname}"
-  subject               = "organization:${var.tfc_organization_name}:project:${var.tfc_project_name}:workspace:${local.tfc_workspace_name}:run_phase:plan"
+  application_id = azuread_application.tfc_application.id
+  display_name   = "my-tfc-federated-credential-plan"
+  audiences      = [var.tfc_azure_audience]
+  issuer         = "https://${var.tfc_hostname}"
+  subject        = "organization:${var.tfc_organization_name}:project:${var.tfc_project_name}:workspace:${local.tfc_workspace_name}:run_phase:plan"
 }
 
 # Creates a federated identity credential which ensures that the given
@@ -76,9 +76,9 @@ resource "azuread_application_federated_identity_credential" "tfc_federated_cred
 #
 # https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/application_federated_identity_credential
 resource "azuread_application_federated_identity_credential" "tfc_federated_credential_apply" {
-  application_id = azuread_application.tfc_application.object_id
-  display_name          = "my-tfc-federated-credential-apply"
-  audiences             = [var.tfc_azure_audience]
-  issuer                = "https://${var.tfc_hostname}"
-  subject               = "organization:${var.tfc_organization_name}:project:${var.tfc_project_name}:workspace:${local.tfc_workspace_name}:run_phase:apply"
+  application_id = azuread_application.tfc_application.id
+  display_name   = "my-tfc-federated-credential-apply"
+  audiences      = [var.tfc_azure_audience]
+  issuer         = "https://${var.tfc_hostname}"
+  subject        = "organization:${var.tfc_organization_name}:project:${var.tfc_project_name}:workspace:${local.tfc_workspace_name}:run_phase:apply"
 }
